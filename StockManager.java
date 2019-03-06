@@ -26,7 +26,10 @@ public class StockManager
      */
     public void addProduct(Product item)
     {
-        stock.add(item);
+        if( ! stock.contains(item))
+        {
+         stock.add(item);   
+        }
     }
     
     /**
@@ -37,6 +40,11 @@ public class StockManager
      */
     public void delivery(int id, int amount)
     {
+        Product product = findProduct(id);
+        if(product != null)
+        {
+         product.increaseQuantity(amount);   
+        }
     }
     
     /**
@@ -46,6 +54,25 @@ public class StockManager
      */
     public Product findProduct(int id)
     {
+        for(Product product : stock)
+        {
+         if(product.getID() == id)
+         {
+         return product;    
+         }
+        }
+        
+        return null;
+    }
+    public Product findProduct(String name)
+    {
+        for(Product product : stock)
+        {
+         if(product.getName().equals(name))         {
+         return product;    
+         }
+        }
+        
         return null;
     }
     
@@ -58,7 +85,15 @@ public class StockManager
      */
     public int numberInStock(int id)
     {
+        Product product = findProduct(id);
+        if(product != null)
+        {
+         return product.getQuantity();   
+        }
+        else
+        {
         return 0;
+        }
     }
 
     /**
@@ -66,5 +101,19 @@ public class StockManager
      */
     public void printProductDetails()
     {
+        for(Product product : stock)
+        {
+         System.out.println(product.toString());   
+        }
+    }
+    public void printLowStockProducts(int upperLimit)
+    {
+     for(Product product : stock)
+     {
+     if (product.getQuantity() < upperLimit)
+     {
+     System.out.println(product.toString());    
+     }
+    }
     }
 }
